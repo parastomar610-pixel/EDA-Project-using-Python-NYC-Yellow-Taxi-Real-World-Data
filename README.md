@@ -32,11 +32,13 @@ The dataset is not included in this repo because of its size. Download the 2023 
 ## 🧹 Data Cleaning Steps
 
 1. Dropped unneeded columns (`store_and_fwd_flag`) and merged the two duplicate airport fee columns (`Airport_fee`, `airport_fee`) into one.
-2. Checked for negative fares (none found in the sample).
-3. Missing values: `passenger_count` and `RatecodeID` were each missing in **3.4%** of rows. Filled `passenger_count` with the median, and `RatecodeID` and `congestion_surcharge` with 0.
+2. Checked all money columns for negative values (none found in the sample).
+3. Missing values: `passenger_count`, `RatecodeID`, `congestion_surcharge` and `airport_fee` were each missing in **3.4%** of rows. Filled `passenger_count` with the median and the others with 0.
 4. Removed trips with more than 6 passengers (very rare).
-5. Excluded zero-distance trips from fare-per-mile and revenue analysis.
-6. Created new columns: pickup hour, day of week, month, weekend flag, trip duration, fare per mile, tip %.
+5. Removed clear recording errors: near-zero distance with fare above $300, distance above 250 miles, duration of 0 or less, duration above 24 hours, fare above $1,000.
+6. Excluded zero-distance trips from fare-per-mile and revenue analysis.
+7. Created new columns: pickup hour, day of week, month, weekend flag, trip duration, fare per mile, tip %.
+8. Joined the TLC taxi zone lookup so zone IDs show as zone names.
 
 ---
 
@@ -84,6 +86,7 @@ Python · Pandas · NumPy · Matplotlib · Seaborn · Jupyter Notebook
 
 ```
 ├── NYC_Yellow_Taxi_EDA.ipynb   # Main analysis notebook
+├── data/                       # Put the Parquet sample here (not in repo)
 ├── images/                     # All charts from the analysis
 ├── LICENSE
 └── README.md
@@ -100,7 +103,7 @@ pip install pandas numpy matplotlib seaborn pyarrow jupyter
 jupyter notebook NYC_Yellow_Taxi_EDA.ipynb
 ```
 
-Change the file path in the data-loading cell to where you saved the Parquet file.
+Put the sample Parquet file at `data/NYC_Taxi_Sample_5pct.parquet` (or change `DATA_PATH` in the first code cell), then run all cells. The last section prints every headline number used in this README.
 
 ---
 
